@@ -20,7 +20,7 @@ import javax.swing.JOptionPane;
  * @author root
  */
 public class FormBarang extends javax.swing.JFrame {
-    
+
     Barang mBarang;
 
     /**
@@ -28,13 +28,13 @@ public class FormBarang extends javax.swing.JFrame {
      */
     public FormBarang() {
         initComponents();
-        
+
         carilistInternalFrame.setVisible(false);
 
         mBarang = new Barang();
 
         isiKategori();
-        
+
     }
 
     public void isiKategori() {
@@ -243,7 +243,7 @@ public class FormBarang extends javax.swing.JFrame {
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel5.setText("Satuan");
 
-        satuanBarangCB.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Unit", "Lembar", "Liter", "Meter" }));
+        satuanBarangCB.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "UNIT", "LEMBAR", "LITER", "METER" }));
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel6.setText("Quantity Max");
@@ -736,7 +736,7 @@ public class FormBarang extends javax.swing.JFrame {
                 .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(45, Short.MAX_VALUE))
+                .addContainerGap(53, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jDesktopPane1Layout = new javax.swing.GroupLayout(jDesktopPane1);
@@ -761,9 +761,9 @@ public class FormBarang extends javax.swing.JFrame {
                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jDesktopPane1Layout.createSequentialGroup()
-                    .addContainerGap(58, Short.MAX_VALUE)
+                    .addContainerGap(56, Short.MAX_VALUE)
                     .addComponent(carilistInternalFrame, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(205, Short.MAX_VALUE)))
+                    .addContainerGap(203, Short.MAX_VALUE)))
         );
         jDesktopPane1.setLayer(jPanel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jDesktopPane1.setLayer(jPanel2, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -808,6 +808,7 @@ public class FormBarang extends javax.swing.JFrame {
 
     private void simpanButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_simpanButtonActionPerformed
         // TODO add your handling code here:
+
         String kode = kodeBarangTF.getText().toUpperCase();
         String nama = namaBarangTF.getText().toUpperCase();
         String satuan = satuanBarangCB.getSelectedItem().toString().toUpperCase();
@@ -820,13 +821,22 @@ public class FormBarang extends javax.swing.JFrame {
 
         mBarang = new Barang(kode, nama, satuan, qtymax, qtymin, ritelsetelah, ritelsebelum, belisetelah, belisebelum);
 
-        Barang.simpanBarang(mBarang);
+        if (simpanButton.getText().equals("Update")) {
+            Barang.updateBarang(mBarang);
+        } else {
+            Barang.simpanBarang(mBarang);
+        }
 
         batalButtonActionPerformed(evt);
     }//GEN-LAST:event_simpanButtonActionPerformed
 
     private void kategoriBarangCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kategoriBarangCBActionPerformed
         // TODO add your handling code here:
+        if(simpanButton.getText().equals("Update"))
+        {
+            return ;
+        }
+        
         String substring = null;
         try {
             substring = kategoriBarangCB.getSelectedItem().toString().trim().substring(0, 3);
@@ -949,6 +959,8 @@ public class FormBarang extends javax.swing.JFrame {
         ritelSebelumPPnTF.setText(null);
         beliSetelahPPnTF.setText(null);
         beliSebelumPPnTF.setText(null);
+
+        simpanButton.setText("Simpan");
     }//GEN-LAST:event_batalButtonActionPerformed
 
     private void listButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listButtonActionPerformed
@@ -1022,7 +1034,7 @@ public class FormBarang extends javax.swing.JFrame {
 
     private void cetakDaftarMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cetakDaftarMenuButtonActionPerformed
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_cetakDaftarMenuButtonActionPerformed
 
     private void cariBarangNamaTFKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cariBarangNamaTFKeyPressed
@@ -1051,10 +1063,36 @@ public class FormBarang extends javax.swing.JFrame {
 
     private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateButtonActionPerformed
         // TODO add your handling code here:
+        carilistInternalFrame.setVisible(false);
+
+        simpanButton.setText("Update");
+
         String kode = tableDaftarBarang.getValueAt(tableDaftarBarang.getSelectedRow(), 0).toString();
         String namaBarang = tableDaftarBarang.getValueAt(tableDaftarBarang.getSelectedRow(), 1).toString();
         String satuan = tableDaftarBarang.getValueAt(tableDaftarBarang.getSelectedRow(), 2).toString();
         String qtyMax = tableDaftarBarang.getValueAt(tableDaftarBarang.getSelectedRow(), 3).toString();
+        String qtyMin = tableDaftarBarang.getValueAt(tableDaftarBarang.getSelectedRow(), 4).toString();
+        String ritelSetelahPPn = tableDaftarBarang.getValueAt(tableDaftarBarang.getSelectedRow(), 5).toString();
+        String ritelSebelumPPn = tableDaftarBarang.getValueAt(tableDaftarBarang.getSelectedRow(), 6).toString();
+        String beliSetelahPPn = tableDaftarBarang.getValueAt(tableDaftarBarang.getSelectedRow(), 7).toString();
+        String beliSebelumPPn = tableDaftarBarang.getValueAt(tableDaftarBarang.getSelectedRow(), 8).toString();
+
+        kodeBarangTF.setText(kode);
+        namaBarangTF.setText(namaBarang);
+        satuanBarangCB.setSelectedItem(satuan);
+        qtyMaxTF.setText(qtyMax);
+        qtyMinTF.setText(qtyMin);
+        ritelSetelahPPnTF.setText(ritelSetelahPPn);
+        ritelSebelumPPnTF.setText(ritelSebelumPPn);
+        beliSetelahPPnTF.setText(beliSetelahPPn);
+        beliSebelumPPnTF.setText(beliSebelumPPn);
+
+        qtyMaxTFKeyReleased(null);
+        qtyMinTFKeyReleased(null);
+        ritelSetelahPPnTFKeyReleased(null);
+        ritelSebelumPPnTFKeyReleased(null);
+        beliSetelahPPnTFKeyReleased(null);
+        beliSebelumPPnTFKeyReleased(null);
     }//GEN-LAST:event_updateButtonActionPerformed
 
     private void keluarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_keluarButtonActionPerformed

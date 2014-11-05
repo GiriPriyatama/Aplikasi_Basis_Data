@@ -158,6 +158,50 @@ public class Barang {
             }
         }
     }
+    
+    public static void updateBarang(Barang pBarang) {
+        Connection connection = null;
+        PreparedStatement prepStatement = null;
+        try {
+            connection = DataBase.getConnection();
+            connection.setAutoCommit(false);
+            String query = ""
+                    + "UPDATE barang "
+                    + "SET "
+                    + "nama_barang = ?, "
+                    + "satuan_barang = ?, "
+                    + "qty_max_barang = ?, "
+                    + "qty_min_barang = ?, "
+                    + "ritel_setelah_ppn = ?, "
+                    + "ritel_sebelum_ppn = ?, "
+                    + "beli_setelah_ppn = ?, "
+                    + "beli_sebelum_ppn = ? "
+                    + "WHERE kode_barang = ?";
+            
+            prepStatement = connection.prepareStatement(query);
+            prepStatement.setString(1, pBarang.getmNamaBarang());
+            prepStatement.setString(2, pBarang.getmSatuan());
+            prepStatement.setString(3, pBarang.getmQtyMax());
+            prepStatement.setString(4, pBarang.getmQtyMin());
+            prepStatement.setString(5, pBarang.getmRitelsetelah());
+            prepStatement.setString(6, pBarang.getmRitelsebelum());
+            prepStatement.setString(7, pBarang.getmBelisetelah());
+            prepStatement.setString(8, pBarang.getmBelisebelum());
+            prepStatement.setString(9, pBarang.getmKodeBarang());
+            prepStatement.executeUpdate();
+            connection.commit();
+            JOptionPane.showMessageDialog(null, "Berhasil diupdate!");
+        } catch (SQLException ex) {
+            Logger.getLogger(Barang.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Gagal mengupdate!");
+        } finally {
+            try {
+                prepStatement.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(Barang.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
 
     /**
      * Membuat kode baru dengan cara mencari kode terbesar dalam kategori
