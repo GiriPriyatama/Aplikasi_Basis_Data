@@ -1,4 +1,4 @@
-PABD
+aplikasi basis data
 ====
 
-praktikum aplikasi basis data
+sistem pergudangan  
