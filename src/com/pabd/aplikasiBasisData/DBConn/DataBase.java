@@ -32,8 +32,12 @@ public class DataBase {
 
     public void login(String username, String password, String url) {
         
+        username = "mhs125314109";
+        password = "mhs125314109";
+        
         // Bagian ini disesuaikan url tiap mesin
-        String jdbcURL = "jdbc:oracle:thin:@"+url+":1521:xe";
+//        String jdbcURL = "jdbc:oracle:thin:@"+url+":1521:xe";
+        String jdbcURL = "jdbc:oracle:thin:@localhost:1521:xe";
         
         this.mURL = jdbcURL;
         this.mUserName = username;

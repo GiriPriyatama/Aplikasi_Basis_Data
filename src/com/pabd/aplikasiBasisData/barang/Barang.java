@@ -13,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -351,6 +352,54 @@ public class Barang {
         }
         return null;
     }
+    
+    public static List<Barang> lihatBarang(String kodeAwal, String kodeAkhir) {
+        Connection connection = null;
+        PreparedStatement prepStatement = null;
+        ResultSet result = null;
+        List<Barang> barangList = new ArrayList<Barang>();
+
+        try {
+            connection = DataBase.getConnection();
+            connection.setAutoCommit(false);
+            prepStatement = connection.prepareStatement("SELECT * FROM barang "
+                    + "WHERE kode_barang BETWEEN ? AND ? "
+                    + "ORDER BY kode_barang");
+            prepStatement.setString(1, kodeAwal);
+            prepStatement.setString(2, kodeAkhir);
+            result = prepStatement.executeQuery();
+            while (result.next()) {
+                Barang barang = new Barang();
+                barang.setmKodeBarang(result.getString("kode_barang"));
+                barang.setmNamaBarang(result.getString("nama_barang"));
+                barang.setmSatuan(result.getString("satuan_barang"));
+                barang.setmQtyMax(result.getString("qty_max_barang"));
+                barang.setmQtyMin(result.getString("qty_min_barang"));
+                barang.setmRitelsetelah(result.getString("ritel_setelah_ppn"));
+                barang.setmRitelsebelum(result.getString("ritel_sebelum_ppn"));
+                barang.setmBelisetelah(result.getString("beli_setelah_ppn"));
+                barang.setmBelisebelum(result.getString("beli_sebelum_ppn"));
+                barangList.add(barang);
+            }
+            connection.commit();
+        } catch (SQLException exception) {
+            List<Kategori> kategoriList = new ArrayList<Kategori>();
+        } finally {
+            try {
+                connection.setAutoCommit(false);
+                if (result != null) {
+                    result.close();
+                }
+                if (prepStatement != null) {
+                    prepStatement.close();
+                }
+
+            } catch (SQLException ex) {
+                Logger.getLogger(Barang.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return barangList;
+    }
 
     public static void hapusBarang(String kode) {
         Connection connection = null;
@@ -374,6 +423,7 @@ public class Barang {
                 Logger.getLogger(Barang.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        
 
     }
 
@@ -397,6 +447,7 @@ public class Barang {
             Logger.getLogger(Barang.class.getName()).log(Level.SEVERE, null, ex);
         }
         JasperViewer.viewReport(jasperPrint, false);
+        
     }
 
     /**
@@ -410,7 +461,7 @@ public class Barang {
         Connection connection = null;
         connection = DataBase.getConnection();
 
-        String reportSource = "./report/daftarBarangDenganParameter.jasper";
+        String reportSource = "./report/daftarBarangDenganParameter2.jasper";
 
         Map<String, Object> params = new HashMap<String, Object>();
 
@@ -425,6 +476,7 @@ public class Barang {
             Logger.getLogger(Barang.class.getName()).log(Level.SEVERE, null, ex);
         }
         JasperViewer.viewReport(jasperPrint, false);
+        
     }
 
 }
